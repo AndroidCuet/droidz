@@ -12,36 +12,37 @@ private SurfaceHolder surfaceHolder;
 private MainGamePanel mainGamePanel;
 private static final String TAG = MainThread.class.getSimpleName();
 
+public void setRunning(boolean running){
+	this.running = running;
+}
 public MainThread(SurfaceHolder surfaceHolder, MainGamePanel mainGamePanel) {
 	super();
 	this.surfaceHolder = surfaceHolder;
 	this.mainGamePanel = mainGamePanel;
 }
-		public void setRunning(boolean running){
-		this.running = running;
-	}
-		@Override
-		public void run() {
-		super.run();
-		long tickCount = 0L;
+
+	@Override
+	public void run() {
+	super.run();
+		
 		Canvas canvas = null;
 		Log.d(TAG ,"Starting game loop");
 		while(running){
-			if(canvas == null){
+			
 				try{
 					canvas = this.surfaceHolder.lockCanvas();
 					synchronized (surfaceHolder) {
 						this.mainGamePanel.onDraw(canvas);
 					}
 				}finally{
-					if(canvas == null){
+					if(canvas != null){
 						surfaceHolder.unlockCanvasAndPost(canvas);
 					}
 				}
-			}
-			tickCount++;
+			
+			
 		}
-		Log.d(TAG, "GameLoopExecute" + tickCount + "times");
+		
 		}
 
 }
