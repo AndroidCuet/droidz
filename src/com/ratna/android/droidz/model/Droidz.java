@@ -10,11 +10,14 @@ private int x; // the x coordinate
 private int y; //the y coordinate
 private boolean touched; //if droidz is touched/picked up
 
+private Speed speed;
+
 public Droidz(Bitmap bitmap, int x, int y) {
 	super();
 	this.bitmap = bitmap;
 	this.x = x;
 	this.y = y;
+	this.speed = new Speed();
 }
 
 public Bitmap getBitmap() {
@@ -48,6 +51,14 @@ public boolean isTouched() {
 public void setTouched(boolean touched) {
 	this.touched = touched;
 }
+public Speed getSpeed() {
+	return speed;
+}
+
+public void setSpeed(Speed speed) {
+	this.speed = speed;
+}
+
 public void draw(Canvas canvas){
 	canvas.drawBitmap(bitmap, x - (bitmap.getWidth()/2), y - (bitmap.getHeight()/2), null);
 }
@@ -62,6 +73,13 @@ public void handleActionDown(int eventX, int eventY){
 		  } else {
 		   setTouched(false);
 		  }
+}
+
+public void update(){
+	if(!touched){
+		x+= speed.getXv() * speed.getxDirection();
+		y+= speed.getYv() * speed.getyDirection();
+	}
 }
 }
 

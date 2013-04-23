@@ -12,7 +12,10 @@ private float yv = 1;
 private int xDirection = DIRECTION_RIGHT;
 private int yDirection = DIRECTION_DOWN;
 
-
+public Speed() {
+	this.xv = 1;
+	this.yv = 1;
+}
 public Speed(float xv, float yv) {
 	super();
 	this.xv = xv;

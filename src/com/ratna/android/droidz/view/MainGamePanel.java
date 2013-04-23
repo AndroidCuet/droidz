@@ -2,6 +2,7 @@ package com.ratna.android.droidz.view;
 
 import com.ratna.android.droidz.R;
 import com.ratna.android.droidz.model.Droidz;
+import com.ratna.android.droidz.model.Speed;
 import com.ratna.android.droidz.thread.MainThread;
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -87,12 +89,48 @@ public class MainGamePanel extends SurfaceView implements
 	return true;
 	
 	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			Log.d(TAG, "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+				if(thread.getThreadGroup()!=null){
+					thread.getThreadGroup().interrupt();					
+				}
+			
+		}
+		return super.onKeyDown(keyCode, event);
+	}	
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		canvas.drawColor(Color.BLACK);
 		droid.draw(canvas);
 	}
-
+	
+	public void update(){
+		// check collision with right wall if heading right
+		if(droid.getSpeed().getxDirection() == Speed.DIRECTION_RIGHT  && 
+				droid.getX()+droid.getBitmap().getWidth()/2>=getWidth()){
+			droid.getSpeed().toggleXDirection();
+			
+			Log.d(TAG, "getX = " + droid.getX());
+			Log.d(TAG, "getBitmap = " + droid.getBitmap().getWidth());
+			Log.d(TAG, "getWidth = " + getWidth());
+			
+		}
+		if(droid.getSpeed().getxDirection() == Speed.DIRECTION_LEFT &&
+				droid.getX()+droid.getBitmap().getWidth()/2<=0){
+			droid.getSpeed().toggleXDirection();
+		}
+		if(droid.getSpeed().getyDirection() == Speed.DIRECTION_DOWN &&
+				droid.getY() + droid.getBitmap().getHeight()/2 >= getHeight()){
+			droid.getSpeed().toggleYDirection();
+		}
+		if(droid.getSpeed().getyDirection() == Speed.DIRECTION_UP &&
+				droid.getY() - droid.getBitmap().getHeight()/2 <= 0){
+			droid.getSpeed().toggleYDirection();
+		}
+		droid.update();
+	}
 }
